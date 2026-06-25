@@ -52,6 +52,8 @@ def parse_counts(data):
 FLOORS = {
     "CATEGORY-ADS": 40000,  # real ad list (Hagezi light), same name the profile already uses
     "WHITELIST": 300, "CATEGORY-GEOBLOCK-RU": 500, "CATEGORY-RU": 500,
+    "CATEGORY-BANK-RU": 100, "CATEGORY-GOV-RU": 50, "CATEGORY-MEDIA-RU": 50,
+    "CATEGORY-ECOMMERCE-RU": 50, "CATEGORY-RETAIL-RU": 30, "YANDEX": 50, "MAILRU-GROUP": 100,
     "WIN-SPY": 50, "TORRENT": 100,
     "PRIVATE": 10, "MICROSOFT": 10, "APPLE": 10, "GOOGLE-PLAY": 5, "GITHUB": 5,
     "YOUTUBE": 20, "TELEGRAM": 5, "STEAM": 10, "EPICGAMES": 5, "RIOT": 5,
