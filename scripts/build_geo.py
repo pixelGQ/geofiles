@@ -210,6 +210,14 @@ def main():
                 k = domain_key(raw)
                 if k not in seen:
                     seen.add(k); raws.append(raw)
+        if spec.get("extra"):  # operator-curated domains added to this category
+            ef = base / spec["extra"]
+            if ef.exists():
+                for dom in parse_adlist(ef.read_text()):
+                    raw = enc_domain(dom)
+                    k = domain_key(raw)
+                    if k not in seen:
+                        seen.add(k); raws.append(raw)
         categories[cat.upper()] = raws
         for al in spec.get("alias", []):
             categories[al.upper()] = list(raws)

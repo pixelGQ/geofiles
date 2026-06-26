@@ -12,7 +12,7 @@
     "category-ads": { "adlist": "hagezi-light" },
     "private": { "from": [{ "src": "loyalsoldier", "name": "private" }, { "src": "roscomvpn", "name": "private" }] },
     "category-ru": { "from": [{ "src": "loyalsoldier", "name": "category-ru" }, { "src": "roscomvpn", "name": "category-ru" }] },
-    "whitelist": { "from": [{ "src": "roscomvpn", "name": "whitelist" }] },
+    "whitelist": { "from": [{ "src": "roscomvpn", "name": "whitelist" }], "extra": "overrides/ru-direct-extra.txt" },
     "category-bank-ru": { "from": [{ "src": "loyalsoldier", "name": "category-bank-ru" }] },
     "category-gov-ru": { "from": [{ "src": "loyalsoldier", "name": "category-gov-ru" }] },
     "category-media-ru": { "from": [{ "src": "loyalsoldier", "name": "category-media-ru" }] },

@@ -1,0 +1,16 @@
+# Operator-curated RU domains forced DIRECT (off the VPN), merged into geosite:whitelist.
+# One domain per line (suffix match: covers the domain and all subdomains).
+# Reason: Russian apps/services that geoblock or fraud-flag foreign IPs, but which
+# common upstream RU categories miss (CDNs, .com variants, niche marketplaces).
+# Add more here as support finds apps that misbehave through the VPN.
+
+wildberries.com
+sberid.ru
+avito-static.ru
+detmir-media.ru
+citilink.ru
+eldorado.ru
+delivery-club.ru
+gismeteo.ru
+drom.ru
+cian.ru
