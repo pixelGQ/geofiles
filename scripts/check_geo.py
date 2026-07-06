@@ -50,7 +50,7 @@ def parse_counts(data):
 
 # Every geosite category the Happ _ROUTING_PROFILE references -> floor count.
 FLOORS = {
-    "CATEGORY-ADS": 40000,  # real ad list (Hagezi light), same name the profile already uses
+    "CATEGORY-ADS": 30,  # slim curated ad list — kept small so the iOS NE stays under its ~50MB memory ceiling
     "WHITELIST": 300, "CATEGORY-GEOBLOCK-RU": 500, "CATEGORY-RU": 500,
     "CATEGORY-BANK-RU": 100, "CATEGORY-GOV-RU": 50, "CATEGORY-MEDIA-RU": 50,
     "CATEGORY-ECOMMERCE-RU": 50, "CATEGORY-RETAIL-RU": 30, "YANDEX": 50, "MAILRU-GROUP": 100,
@@ -76,7 +76,7 @@ def main():
         if gi.get(ip, 0) < 1:
             errs.append(f"geoip {ip}: missing/empty")
     size = len(geosite)
-    if not (1_000_000 < size < 18_000_000):
+    if not (60_000 < size < 700_000):  # keep small for iOS NE ~50MB memory ceiling
         errs.append(f"geosite size {size} out of [1MB, 18MB]")
 
     print(f"geosite={size}B  {len(gs)} categories   |   geoip {len(gi)} categories",

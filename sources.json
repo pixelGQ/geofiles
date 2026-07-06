@@ -1,41 +1,300 @@
 {
   "sources": {
-    "loyalsoldier": { "url": "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat" },
-    "roscomvpn": { "url": "https://raw.githubusercontent.com/hydraponique/roscomvpn-geosite/release/geosite.dat" }
+    "loyalsoldier": {
+      "url": "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat"
+    },
+    "roscomvpn": {
+      "url": "https://raw.githubusercontent.com/hydraponique/roscomvpn-geosite/release/geosite.dat"
+    }
   },
-  "adlists": {
-    "hagezi-light": { "url": "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/light-onlydomains.txt", "format": "domains" }
+  "geoip": {
+    "url": "https://raw.githubusercontent.com/hydraponique/roscomvpn-geoip/release/geoip.dat"
   },
-  "geoip": { "url": "https://raw.githubusercontent.com/hydraponique/roscomvpn-geoip/release/geoip.dat" },
   "ads_allow": "overrides/ads-allow.txt",
   "geosite_categories": {
-    "category-ads": { "adlist": "hagezi-light" },
-    "private": { "from": [{ "src": "loyalsoldier", "name": "private" }, { "src": "roscomvpn", "name": "private" }] },
-    "category-ru": { "from": [{ "src": "loyalsoldier", "name": "category-ru" }, { "src": "roscomvpn", "name": "category-ru" }] },
-    "whitelist": { "from": [{ "src": "roscomvpn", "name": "whitelist" }], "extra": "overrides/ru-direct-extra.txt" },
-    "category-bank-ru": { "from": [{ "src": "loyalsoldier", "name": "category-bank-ru" }] },
-    "category-gov-ru": { "from": [{ "src": "loyalsoldier", "name": "category-gov-ru" }] },
-    "category-media-ru": { "from": [{ "src": "loyalsoldier", "name": "category-media-ru" }] },
-    "category-ecommerce-ru": { "from": [{ "src": "loyalsoldier", "name": "category-ecommerce-ru" }] },
-    "category-retail-ru": { "from": [{ "src": "loyalsoldier", "name": "category-retail-ru" }] },
-    "yandex": { "from": [{ "src": "loyalsoldier", "name": "yandex" }] },
-    "mailru-group": { "from": [{ "src": "loyalsoldier", "name": "mailru-group" }] },
-    "microsoft": { "from": [{ "src": "loyalsoldier", "name": "microsoft" }, { "src": "roscomvpn", "name": "microsoft" }] },
-    "apple": { "from": [{ "src": "loyalsoldier", "name": "apple" }, { "src": "roscomvpn", "name": "apple" }] },
-    "google-play": { "from": [{ "src": "loyalsoldier", "name": "google-play" }, { "src": "roscomvpn", "name": "google-play" }] },
-    "epicgames": { "from": [{ "src": "loyalsoldier", "name": "epicgames" }, { "src": "roscomvpn", "name": "epicgames" }] },
-    "riot": { "from": [{ "src": "loyalsoldier", "name": "riot" }, { "src": "roscomvpn", "name": "riot" }] },
-    "escapefromtarkov": { "from": [{ "src": "roscomvpn", "name": "escapefromtarkov" }, { "src": "loyalsoldier", "name": "escapefromtarkov" }] },
-    "steam": { "from": [{ "src": "loyalsoldier", "name": "steam" }, { "src": "roscomvpn", "name": "steam" }] },
-    "twitch": { "from": [{ "src": "loyalsoldier", "name": "twitch" }, { "src": "roscomvpn", "name": "twitch" }] },
-    "pinterest": { "from": [{ "src": "loyalsoldier", "name": "pinterest" }, { "src": "roscomvpn", "name": "pinterest" }] },
-    "faceit": { "from": [{ "src": "roscomvpn", "name": "faceit" }, { "src": "loyalsoldier", "name": "faceit" }] },
-    "category-geoblock-ru": { "from": [{ "src": "roscomvpn", "name": "category-geoblock-ru" }] },
-    "github": { "from": [{ "src": "loyalsoldier", "name": "github" }, { "src": "roscomvpn", "name": "github" }] },
-    "twitch-ads": { "from": [{ "src": "roscomvpn", "name": "twitch-ads" }] },
-    "youtube": { "from": [{ "src": "loyalsoldier", "name": "youtube" }, { "src": "roscomvpn", "name": "youtube" }] },
-    "telegram": { "from": [{ "src": "loyalsoldier", "name": "telegram" }, { "src": "roscomvpn", "name": "telegram" }] },
-    "win-spy": { "from": [{ "src": "loyalsoldier", "name": "win-spy" }, { "src": "roscomvpn", "name": "win-spy" }] },
-    "torrent": { "from": [{ "src": "roscomvpn", "name": "torrent" }] }
+    "category-ads": {
+      "extra": "overrides/ads-min.txt"
+    },
+    "private": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "private"
+        },
+        {
+          "src": "roscomvpn",
+          "name": "private"
+        }
+      ]
+    },
+    "category-ru": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "category-ru"
+        },
+        {
+          "src": "roscomvpn",
+          "name": "category-ru"
+        }
+      ]
+    },
+    "whitelist": {
+      "from": [
+        {
+          "src": "roscomvpn",
+          "name": "whitelist"
+        }
+      ],
+      "extra": "overrides/ru-direct-extra.txt"
+    },
+    "category-bank-ru": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "category-bank-ru"
+        }
+      ]
+    },
+    "category-gov-ru": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "category-gov-ru"
+        }
+      ]
+    },
+    "category-media-ru": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "category-media-ru"
+        }
+      ]
+    },
+    "category-ecommerce-ru": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "category-ecommerce-ru"
+        }
+      ]
+    },
+    "category-retail-ru": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "category-retail-ru"
+        }
+      ]
+    },
+    "yandex": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "yandex"
+        }
+      ]
+    },
+    "mailru-group": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "mailru-group"
+        }
+      ]
+    },
+    "microsoft": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "microsoft"
+        },
+        {
+          "src": "roscomvpn",
+          "name": "microsoft"
+        }
+      ]
+    },
+    "apple": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "apple"
+        },
+        {
+          "src": "roscomvpn",
+          "name": "apple"
+        }
+      ]
+    },
+    "google-play": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "google-play"
+        },
+        {
+          "src": "roscomvpn",
+          "name": "google-play"
+        }
+      ]
+    },
+    "epicgames": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "epicgames"
+        },
+        {
+          "src": "roscomvpn",
+          "name": "epicgames"
+        }
+      ]
+    },
+    "riot": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "riot"
+        },
+        {
+          "src": "roscomvpn",
+          "name": "riot"
+        }
+      ]
+    },
+    "escapefromtarkov": {
+      "from": [
+        {
+          "src": "roscomvpn",
+          "name": "escapefromtarkov"
+        },
+        {
+          "src": "loyalsoldier",
+          "name": "escapefromtarkov"
+        }
+      ]
+    },
+    "steam": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "steam"
+        },
+        {
+          "src": "roscomvpn",
+          "name": "steam"
+        }
+      ]
+    },
+    "twitch": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "twitch"
+        },
+        {
+          "src": "roscomvpn",
+          "name": "twitch"
+        }
+      ]
+    },
+    "pinterest": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "pinterest"
+        },
+        {
+          "src": "roscomvpn",
+          "name": "pinterest"
+        }
+      ]
+    },
+    "faceit": {
+      "from": [
+        {
+          "src": "roscomvpn",
+          "name": "faceit"
+        },
+        {
+          "src": "loyalsoldier",
+          "name": "faceit"
+        }
+      ]
+    },
+    "category-geoblock-ru": {
+      "from": [
+        {
+          "src": "roscomvpn",
+          "name": "category-geoblock-ru"
+        }
+      ]
+    },
+    "github": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "github"
+        },
+        {
+          "src": "roscomvpn",
+          "name": "github"
+        }
+      ]
+    },
+    "twitch-ads": {
+      "from": [
+        {
+          "src": "roscomvpn",
+          "name": "twitch-ads"
+        }
+      ]
+    },
+    "youtube": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "youtube"
+        },
+        {
+          "src": "roscomvpn",
+          "name": "youtube"
+        }
+      ]
+    },
+    "telegram": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "telegram"
+        },
+        {
+          "src": "roscomvpn",
+          "name": "telegram"
+        }
+      ]
+    },
+    "win-spy": {
+      "from": [
+        {
+          "src": "loyalsoldier",
+          "name": "win-spy"
+        },
+        {
+          "src": "roscomvpn",
+          "name": "win-spy"
+        }
+      ]
+    },
+    "torrent": {
+      "from": [
+        {
+          "src": "roscomvpn",
+          "name": "torrent"
+        }
+      ]
+    }
   }
 }
