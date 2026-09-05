@@ -44,6 +44,11 @@ jobs:
         run: |
           mv geoip.dat.new geoip.dat
           mv geosite.dat.new geosite.dat
+          # Sidecars: INCY decides whether to re-download a geo file by fetching
+          # <url>.sha256 and comparing; without them it kept an April build for
+          # months (found 2026-09-05). Format is sha256sum's: "<hex>  <name>".
+          sha256sum geoip.dat   > geoip.dat.sha256
+          sha256sum geosite.dat > geosite.dat.sha256
 
       - name: Cleanup
         if: steps.check.outputs.changed != 'true'
@@ -54,12 +59,17 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add geoip.dat geosite.dat archive/
+          git add geoip.dat geosite.dat geoip.dat.sha256 geosite.dat.sha256 archive/
           git commit -m "geo: rebuild $(date -u +%Y-%m-%dT%H:%MZ)"
           git push
 
       - name: Purge jsDelivr cache
         if: steps.check.outputs.changed == 'true'
+        # The subscription profile points at THIS repo's @master (see
+        # backend/app/subscription/config/formats/strategies/base64.py), and
+        # jsDelivr caches a branch ref for 12 h. Purging the org repo (as this
+        # step did until 2026-09-05) cleared nothing anyone downloads.
         run: |
-          curl -s "https://purge.jsdelivr.net/gh/Bolt-VPN/geofiles@latest/geoip.dat"  >/dev/null
-          curl -s "https://purge.jsdelivr.net/gh/Bolt-VPN/geofiles@latest/geosite.dat" >/dev/null
+          for f in geoip.dat geosite.dat geoip.dat.sha256 geosite.dat.sha256; do
+            curl -s "https://purge.jsdelivr.net/gh/pixelGQ/geofiles@master/$f" >/dev/null
+          done
