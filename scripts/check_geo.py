@@ -61,14 +61,27 @@ FLOORS = {
 }
 
 
+# The full profile (geosite-full.dat, desktop/Android only) carries the whole
+# Loyalsoldier category-ads-all: ~189k domains on 2026-09-06, ~5 MB. Floors are
+# the same for every other category — it is the same build with one source swapped.
+FULL_ADS_FLOOR = 100_000
+SLIM_SIZE = (60_000, 700_000)        # keep small for iOS NE ~50MB memory ceiling
+FULL_SIZE = (1_000_000, 12_000_000)  # never served to iOS; sanity bounds only
+
+
 def main():
-    geosite = Path(sys.argv[1]).read_bytes()
-    geoip = Path(sys.argv[2]).read_bytes()
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    full = "--full" in sys.argv
+    geosite = Path(args[0]).read_bytes()
+    geoip = Path(args[1]).read_bytes()
     gs = parse_counts(geosite)
     gi = parse_counts(geoip)
 
+    floors = dict(FLOORS)
+    if full:
+        floors["CATEGORY-ADS"] = FULL_ADS_FLOOR
     errs = []
-    for cat, floor in FLOORS.items():
+    for cat, floor in floors.items():
         n = gs.get(cat, 0)
         if n < floor:
             errs.append(f"geosite {cat}: {n} < floor {floor}")
@@ -76,12 +89,13 @@ def main():
         if gi.get(ip, 0) < 1:
             errs.append(f"geoip {ip}: missing/empty")
     size = len(geosite)
-    if not (60_000 < size < 700_000):  # keep small for iOS NE ~50MB memory ceiling
-        errs.append(f"geosite size {size} out of [1MB, 18MB]")
+    lo, hi = FULL_SIZE if full else SLIM_SIZE
+    if not (lo < size < hi):
+        errs.append(f"geosite size {size} out of [{lo}, {hi}] ({'full' if full else 'slim'})")
 
     print(f"geosite={size}B  {len(gs)} categories   |   geoip {len(gi)} categories",
           file=sys.stderr)
-    for c in sorted(FLOORS):
+    for c in sorted(floors):
         print(f"  {gs.get(c, 0):8d}  {c}", file=sys.stderr)
     print(f"  geoip: PRIVATE={gi.get('PRIVATE', 0)}  DIRECT={gi.get('DIRECT', 0)}",
           file=sys.stderr)

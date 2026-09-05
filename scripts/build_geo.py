@@ -170,11 +170,28 @@ def main():
     ap.add_argument("--out-geosite", default="geosite.dat.new")
     ap.add_argument("--out-geoip", default="geoip.dat.new")
     ap.add_argument("--cache", default=None, help="download cache dir (offline reuse)")
+    ap.add_argument("--profile", choices=("slim", "full"), default="slim",
+                    help="slim: curated ~110-domain category-ads (iOS-safe); "
+                         "full: category-ads = Loyalsoldier category-ads-all (~189k domains)")
     args = ap.parse_args()
 
     cfg_path = Path(args.config)
     cfg = json.loads(cfg_path.read_text())
     base = cfg_path.parent
+
+    if args.profile == "full":
+        # Full ad list for platforms WITHOUT the iOS Network Extension memory
+        # ceiling (Windows/macOS/Linux/Android). The category keeps its NAME —
+        # the Happ profile rule is `geosite:category-ads` either way and only the
+        # Geositeurl differs per platform — and swaps its SOURCE. The curated
+        # extras stay on top; ads_allow exceptions are honoured (see below).
+        # ⚠ Never ship this file to iOS: 44k domains already killed the iPhone
+        # tunnel every 2-10 min on 2026-07-06 (jetsam at the ~50 MB cap).
+        ads = cfg["geosite_categories"]["category-ads"]
+        cfg["geosite_categories"]["category-ads"] = {
+            "from": [{"src": "loyalsoldier", "name": "category-ads-all"}],
+            "extra": ads.get("extra"),
+        }
 
     parsed = {}
     for sid, s in cfg["sources"].items():
@@ -218,6 +235,15 @@ def main():
                     k = domain_key(raw)
                     if k not in seen:
                         seen.add(k); raws.append(raw)
+        if cat == "category-ads" and allow:
+            # ads_allow exceptions apply to the whole ad category, whatever its
+            # source: an upstream list (full profile) carries the same false
+            # positives the curated one was trimmed of.
+            before = len(raws)
+            raws = [d for d in raws
+                    if domain_key(d)[1].decode("utf-8", "replace").lower() not in allow]
+            if before != len(raws):
+                print(f"[allow] category-ads: {before - len(raws)} removed", file=sys.stderr)
         categories[cat.upper()] = raws
         for al in spec.get("alias", []):
             categories[al.upper()] = list(raws)

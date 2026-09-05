@@ -23,11 +23,23 @@ jobs:
       - name: Guard — fail if any profile category is missing/empty
         run: python3 scripts/check_geo.py geosite.dat.new geoip.dat.new
 
+      # Second artifact for desktop/Android: same build, category-ads swapped for
+      # Loyalsoldier category-ads-all (~189k domains). The backend hands this URL
+      # only to platforms without the iOS NE memory ceiling (base64.py,
+      # _FULL_ADS_PLATFORMS); iOS/Apple TV keep geosite.dat above.
+      - name: Build full-ads geosite (desktop/Android)
+        run: |
+          python3 scripts/build_geo.py --config sources.json --profile full --out-geosite geosite-full.dat.new --out-geoip geoip.full.tmp
+          rm -f geoip.full.tmp
+
+      - name: Guard — full-ads geosite
+        run: python3 scripts/check_geo.py --full geosite-full.dat.new geoip.dat.new
+
       - name: Detect changes
         id: check
         run: |
           changed=false
-          for f in geoip.dat geosite.dat; do
+          for f in geoip.dat geosite.dat geosite-full.dat; do
             if [ ! -f "$f" ] || ! cmp -s "$f" "$f.new"; then changed=true; fi
           done
           echo "changed=$changed" >> "$GITHUB_OUTPUT"
@@ -37,29 +49,31 @@ jobs:
         run: |
           d="archive/$(date -u +%Y-%m-%d)"
           mkdir -p "$d"
-          for f in geoip.dat geosite.dat; do [ -f "$f" ] && cp "$f" "$d/"; done
+          for f in geoip.dat geosite.dat geosite-full.dat; do [ -f "$f" ] && cp "$f" "$d/"; done
 
       - name: Promote
         if: steps.check.outputs.changed == 'true'
         run: |
           mv geoip.dat.new geoip.dat
           mv geosite.dat.new geosite.dat
+          mv geosite-full.dat.new geosite-full.dat
           # Sidecars: INCY decides whether to re-download a geo file by fetching
           # <url>.sha256 and comparing; without them it kept an April build for
           # months (found 2026-09-05). Format is sha256sum's: "<hex>  <name>".
           sha256sum geoip.dat   > geoip.dat.sha256
           sha256sum geosite.dat > geosite.dat.sha256
+          sha256sum geosite-full.dat > geosite-full.dat.sha256
 
       - name: Cleanup
         if: steps.check.outputs.changed != 'true'
-        run: rm -f geoip.dat.new geosite.dat.new
+        run: rm -f geoip.dat.new geosite.dat.new geosite-full.dat.new
 
       - name: Commit & push
         if: steps.check.outputs.changed == 'true'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add geoip.dat geosite.dat geoip.dat.sha256 geosite.dat.sha256 archive/
+          git add geoip.dat geosite.dat geosite-full.dat geoip.dat.sha256 geosite.dat.sha256 geosite-full.dat.sha256 archive/
           git commit -m "geo: rebuild $(date -u +%Y-%m-%dT%H:%MZ)"
           git push
 
@@ -70,6 +84,6 @@ jobs:
         # jsDelivr caches a branch ref for 12 h. Purging the org repo (as this
         # step did until 2026-09-05) cleared nothing anyone downloads.
         run: |
-          for f in geoip.dat geosite.dat geoip.dat.sha256 geosite.dat.sha256; do
+          for f in geoip.dat geosite.dat geosite-full.dat geoip.dat.sha256 geosite.dat.sha256 geosite-full.dat.sha256; do
             curl -s "https://purge.jsdelivr.net/gh/pixelGQ/geofiles@master/$f" >/dev/null
           done
