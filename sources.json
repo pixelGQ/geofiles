@@ -53,6 +53,10 @@
         {
           "src": "loyalsoldier",
           "name": "category-bank-ru"
+        },
+        {
+          "src": "loyalsoldier",
+          "name": "sber"
         }
       ]
     },
